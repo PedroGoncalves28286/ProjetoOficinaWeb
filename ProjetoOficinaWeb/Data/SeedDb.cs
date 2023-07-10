@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data.Entities;
 using System;
 using System.Linq;
@@ -9,18 +10,53 @@ namespace ProjetoOficinaWeb.Data
     public class SeedDb
     {
         private readonly DataContext _context;
-
+        private readonly IUserHelper _userHelper;
         private Random _random;
-
         public SeedDb(DataContext context)
         {
             _context = context;
+            _userHelper = userHelper;
             _random = new Random();
         }
 
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
+            await _context.Database.MigrateAsync();
+            await _userHelper.CheckRoleAsync("Admin");
+            await _userHelper.CheckRoleAsync("Customer");
+            await _userHelper.CheckRoleAsync("Mechanic");
+            await _userHelper.CheckRoleAsync("Receptionist");
+
+            var user = await _userHelper.GetUserByEmailAsync("Pedro.Goncalves.28286@formandos.cinel.pt"); 
+            if (user == null) // se nao existir
+            {
+                user = new User
+                {
+                    FirstName = "Pedro",
+                    LastName = "Gonçalves",
+                    Email = "Pedro.Goncalves.28286@formandos.cinel.pt",
+                    UserName = "Pedro.Goncalves.28286@formandos.cinel.pt",
+                    PhoneNumber = "914038992",
+                    ImageUrl = ""
+                };
+
+                var result = await _userHelper.AddUserAsync(user, "123456789");
+                if (result != IdentityResult.Success) 
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
+               
+            }
+
+            var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
+            if (!isInRole)
+            {
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
+            }
+
 
             if (!_context.Services.Any())
             {
