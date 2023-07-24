@@ -1,0 +1,71 @@
+﻿@model IEnumerable<ProjetoOficinaWeb.Data.Entities.Appointment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Appointments</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            @if (this.User.IsInRole("Receptionist"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.User.FullName)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.AppointmentDateLocal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RepairDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lines)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (this.User.IsInRole("Receptionist"))
+                {
+                    <th>
+                        @Html.DisplayFor(modelItem => item.User.FullName)
+                    </th>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentDateLocal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RepairDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Lines)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Value)
+                </td>
+                <td>
+                    <a asp-action="Repair" asp-route-id="@item.Id" class="btn btn-info" id="btnDeliver">Repair</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
