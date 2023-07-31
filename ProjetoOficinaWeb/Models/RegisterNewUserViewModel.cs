@@ -6,6 +6,8 @@ namespace ProjetoOficinaWeb.Models
 {
     public class RegisterNewUserViewModel : User
     {
+        internal string Email;
+
         [Required]
         [MinLength(6)]
         public string Password { get; set; }
