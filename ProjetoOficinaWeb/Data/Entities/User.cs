@@ -5,6 +5,8 @@ namespace ProjetoOficinaWeb.Data.Entities
 {
     public class User
     {
+        internal string Email;
+
         public int Id { get; set; }
 
         [Required] 
