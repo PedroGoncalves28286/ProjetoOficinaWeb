@@ -16,7 +16,7 @@ namespace ProjetoOficinaWeb.Models
         [Range(1, int.MaxValue, ErrorMessage = "Tem de selecionar um serviço.")] 
         public int ServiceId { get; set; }
 
-        [Range(0.0001, double.MaxValue, ErrorMessage = "A quantidade tem de ser um numero positivo ")]
+        [Range(0.0001, double.MaxValue, ErrorMessage = "A quantidade tem de ser um numero positiva ")]
         public double Quantity { get; set; } 
 
         public IEnumerable<SelectListItem> Services { get; set; }  
