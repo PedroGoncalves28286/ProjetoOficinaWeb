@@ -1,6 +1,4 @@
-using System;
-
-namespace ProjetoOficinaWeb.Models
+﻿namespace ProjetoOficinaWeb.Models
 {
     public class ErrorViewModel
     {
