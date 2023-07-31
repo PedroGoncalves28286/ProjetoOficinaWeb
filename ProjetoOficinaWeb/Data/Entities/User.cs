@@ -6,6 +6,7 @@ namespace ProjetoOficinaWeb.Data.Entities
     public class User
     {
         internal string Email;
+        internal string UserName;
 
         public int Id { get; set; }
 
@@ -27,8 +28,7 @@ namespace ProjetoOficinaWeb.Data.Entities
         [Display(Name = "Full Name")]
         public string FullName => $"{FirstName} {LastName}";
 
-        public string ImageUrl { get; set; } 
-
-        
+        public string ImageUrl { get; set; }
+        public object PhoneNumber { get; internal set; }
     }
 }
