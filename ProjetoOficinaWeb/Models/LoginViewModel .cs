@@ -1,19 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
-using ProjetoOficinaWeb.Data.Entities;
 
 namespace ProjetoOficinaWeb.Models
 {
-    public class RegisterNewUserReceptionistViewModel : User
+    public class LoginViewModel 
+                                
     {
         [Required]
-        [MinLength(6)]
-        public string Password { get; set; }
+        [EmailAddress] 
+        public string UserName { get; set; } 
 
         [Required]
-        [Compare("Password")]
-        public string Confirm { get; set; }
+        [MinLength(6)] 
+        public string Password { get; set; }
 
-        public IFormFile ImageFile { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

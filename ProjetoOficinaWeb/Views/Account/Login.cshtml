@@ -1,0 +1,38 @@
+﻿@model ProjetoOficinaWeb.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="form-group">
+                <label asp-for="UserName">Username</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-warning"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span class="text-warning" asp-validation-for="Password"></span>
+            </div>
+            <div class="form-group">
+                <div class="form-check">
+                    <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label">Remember Me?</label>
+                </div>
+                <span asp-validation-for="RememberMe" class="text-warning"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+                <button asp-action="RecoverPassword" type="submit" class="btn btn-default">Recover Password</button>
+                <a asp-action="Register" class="btn btn-primary">Register New User</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*@section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}*@
