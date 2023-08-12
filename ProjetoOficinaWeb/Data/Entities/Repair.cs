@@ -10,18 +10,18 @@ namespace ProjetoOficinaWeb.Data.Entities
     {
         public int Id { get; set; }
 
-        public Vehicle Vehicle { get; set; }
+        public string  Vehicle { get; set; }
 
-        public int VehicleId { get; set; }
+        public string  VehicleId { get; set; }
 
-        public Service Service { get; set; }
+        public string Service { get; set; }
 
-        public int ServiceId { get; set; }
+        public string ServiceId { get; set; }
 
-        public Appointment Appointment { get; set; }
+        public string  Appointment { get; set; }
 
-        public int AppointmentId { get; set; }
+        public string AppointmentId { get; set; }
 
-        public int Mechanic { get; set; }
+        public string Mechanic { get; set; }
     }
 }

@@ -10,22 +10,22 @@ using ProjetoOficinaWeb.Data.Entities;
 
 namespace ProjetoOficinaWeb.Controllers
 {
-    public class ServicesController : Controller
+    public class MechanicsController : Controller
     {
         private readonly DataContext _context;
 
-        public ServicesController(DataContext context)
+        public MechanicsController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: Services
+        // GET: Mechanics
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Services.ToListAsync());
+            return View(await _context.Mechanics.ToListAsync());
         }
 
-        // GET: Services/Details/5
+        // GET: Mechanics/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var service = await _context.Services
+            var mechanic = await _context.Mechanics
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (service == null)
+            if (mechanic == null)
             {
                 return NotFound();
             }
 
-            return View(service);
+            return View(mechanic);
         }
 
-        // GET: Services/Create
+        // GET: Mechanics/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Services/Create
+        // POST: Mechanics/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,Price")] Service service)
+        public async Task<IActionResult> Create([Bind("Id,Name,Specialization,Age,Photo")] Mechanic mechanic)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(service);
+                _context.Add(mechanic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(service);
+            return View(mechanic);
         }
 
-        // GET: Services/Edit/5
+        // GET: Mechanics/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var service = await _context.Services.FindAsync(id);
-            if (service == null)
+            var mechanic = await _context.Mechanics.FindAsync(id);
+            if (mechanic == null)
             {
                 return NotFound();
             }
-            return View(service);
+            return View(mechanic);
         }
 
-        // POST: Services/Edit/5
+        // POST: Mechanics/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Price")] Service service)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Specialization,Age,Photo")] Mechanic mechanic)
         {
-            if (id != service.Id)
+            if (id != mechanic.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                    _context.Update(service);
+                    _context.Update(mechanic);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ServiceExists(service.Id))
+                    if (!MechanicExists(mechanic.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace ProjetoOficinaWeb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(service);
+            return View(mechanic);
         }
 
-        // GET: Services/Delete/5
+        // GET: Mechanics/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var service = await _context.Services
+            var mechanic = await _context.Mechanics
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (service == null)
+            if (mechanic == null)
             {
                 return NotFound();
             }
 
-            return View(service);
+            return View(mechanic);
         }
 
-        // POST: Services/Delete/5
+        // POST: Mechanics/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var service = await _context.Services.FindAsync(id);
-            _context.Services.Remove(service);
+            var mechanic = await _context.Mechanics.FindAsync(id);
+            _context.Mechanics.Remove(mechanic);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ServiceExists(int id)
+        private bool MechanicExists(int id)
         {
-            return _context.Services.Any(e => e.Id == id);
+            return _context.Mechanics.Any(e => e.Id == id);
         }
     }
 }

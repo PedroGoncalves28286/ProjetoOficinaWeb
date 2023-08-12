@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Principal;
 
 namespace ProjetoOficinaWeb.Data.Entities
@@ -19,11 +20,12 @@ namespace ProjetoOficinaWeb.Data.Entities
 
         [Display(Name = "Image")]
         public string ImageUrl { get; set; }
-        public int? Year { get; set; }
 
-        public User Email { get; set; }
+        public DateTime Date { get; set; }
 
-        public string UserId { get; set; }
+        public string Email { get; set; }
+
+       
     }
     
 }

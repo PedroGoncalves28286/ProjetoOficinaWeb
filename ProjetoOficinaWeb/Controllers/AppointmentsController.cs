@@ -1,187 +1,153 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using ProjetoOficinaWeb.Data;
+using ProjetoOficinaWeb.Data.Entities;
 
 namespace ProjetoOficinaWeb.Controllers
 {
     public class AppointmentsController : Controller
     {
-        private readonly IAppointmentRepository _appointmentRepository;
-        private readonly IVehicleRepository _vehicleRepository;
-        private readonly IServiceRepository _serviceRepository;
+        private readonly DataContext _context;
 
-        public AppointmentsController(IAppointmentRepository appointmentRepository, IVehicleRepository vehicleRepository, IServiceRepository serviceRepository)
+        public AppointmentsController(DataContext context)
         {
-            _appointmentRepository = appointmentRepository;
-            _vehicleRepository = vehicleRepository;
-            _serviceRepository = serviceRepository;
+            _context = context;
         }
 
-        // GET: Appointments 
+        // GET: Appointments
         public async Task<IActionResult> Index()
         {
-            //var model = await _appointmentRepository.GetAppointmentAsync(this.User.Identity.Name);
-            var model = _appointmentRepository.GetAll();
-            return View(model);
+            return View(await _context.Appointments.ToListAsync());
         }
 
-        [Authorize(Roles = "Receptionist,Mechanic")]
-        public async Task<IActionResult> Create()
-        {
-            var model = await _appointmentRepository.GetDetailTempsAsync(this.User.Identity.Name);
-            return View(model);
-        }
-
-        public IActionResult AddVehicle()
-        {
-            var model = new AddItemViewModel
-            {
-                Vehicles = _vehicleRepository.GetComboVehicles(),
-                Services = _serviceRepository.GetComboServices()
-            };
-
-            return View(model);
-        }
-
-        [Authorize(Roles = "Receptionist,Mechanic")]
-        [HttpPost]
-        public async Task<IActionResult> AddVehicle(AddItemViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                await _appointmentRepository.AddItemToAppointmentAsync(model, this.User.Identity.Name);
-                return RedirectToAction("Create");
-            }
-
-            return View(model);
-        }
-
-        [Authorize(Roles = "Receptionist,Mechanic")]
-        public async Task<IActionResult> DeleteItem(int? id)
+        // GET: Appointments/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            await _appointmentRepository.DeleteDetailTempAsync(id.Value);
-            return RedirectToAction("Create");
-        }
-
-        [Authorize(Roles = "Receptionist,Mechanic")]
-        public async Task<IActionResult> Increase(int? id)
-        {
-            if (id == null)
+            var appointment = await _context.Appointments
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (appointment == null)
             {
                 return NotFound();
             }
 
-            await _appointmentRepository.ModifyAppointmentDetailTempQuantityAsync(id.Value, 1);
-            return RedirectToAction("Create");
+            return View(appointment);
         }
 
-        [Authorize(Roles = "Receptionist,Mechanic")]
-        public async Task<IActionResult> Decrease(int? id)
+        // GET: Appointments/Create
+        public IActionResult Create()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            await _appointmentRepository.ModifyAppointmentDetailTempQuantityAsync(id.Value, -1);
-            return RedirectToAction("Create");
-        }
-
-        [Authorize(Roles = "Receptionist,Mechanic")]
-        public async Task<IActionResult> ConfirmOrder()
-        {
-            var response = await _appointmentRepository.ConfirmAppointmentAsync(this.User.Identity.Name);
-            if (response)
-            {
-                return RedirectToAction("Index");
-            }
-
-            return RedirectToAction("Create");
-        }
-
-        public async Task<IActionResult> Repair(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var order = await _appointmentRepository.GetAppointmentAsync(id.Value);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            var model = new RepairViewModel
-            {
-                Id = order.Id,
-                //RepairDate = DateTime.Today
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Repair(RepairViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                await _appointmentRepository.RepairOrder(model);
-                return RedirectToAction("Index");
-            }
-
             return View();
         }
 
-        // GET: Appointments/Delete/5 // 
-        [Authorize(Roles = "Receptionist, Mechanic")]
+        // POST: Appointments/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,AppointmentId,Date,Subject")] Appointment appointment)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(appointment);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(appointment);
+        }
+
+        // GET: Appointments/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+            return View(appointment);
+        }
+
+        // POST: Appointments/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AppointmentId,Date,Subject")] Appointment appointment)
+        {
+            if (id != appointment.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(appointment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AppointmentExists(appointment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(appointment);
+        }
+
+        // GET: Appointments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
-                return new NotFoundViewResult("Error404");
+                return NotFound();
             }
 
-            var appointment = await _appointmentRepository.GetByIdAsync(id.Value);
+            var appointment = await _context.Appointments
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (appointment == null)
             {
-                return new NotFoundViewResult("Error404");
+                return NotFound();
             }
 
             return View(appointment);
         }
 
         // POST: Appointments/Delete/5
-        [Authorize(Roles = "Receptionist, Mechanic")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var appointment = await _appointmentRepository.GetByIdAsync(id); ;
+            var appointment = await _context.Appointments.FindAsync(id);
+            _context.Appointments.Remove(appointment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-            try
-            {
-                await _appointmentRepository.DeleteAsync(appointment);
-                return RedirectToAction(nameof(Index));
-            }
-            catch (DbUpdateException ex)
-            {
-
-                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
-                {
-                    ViewBag.ErrorTitle = $"{appointment.AppointmentDate} is being used!!";
-                    ViewBag.ErrorMessage = $"{appointment.AppointmentDate} it´s not possible to delete</br></br>";
-                }
-
-                return View("Error");
-            }
+        private bool AppointmentExists(int id)
+        {
+            return _context.Appointments.Any(e => e.Id == id);
         }
     }
 }
-

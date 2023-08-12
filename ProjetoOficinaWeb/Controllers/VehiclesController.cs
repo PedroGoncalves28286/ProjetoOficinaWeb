@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data;
-using System.Data;
-using System.Threading.Tasks;
+using ProjetoOficinaWeb.Data.Entities;
 
 namespace ProjetoOficinaWeb.Controllers
 {
     public class VehiclesController : Controller
     {
-         
         private readonly DataContext _context;
 
         public VehiclesController(DataContext context)
@@ -31,14 +33,14 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var vehicles = await _context.Vehicles
+            var vehicle = await _context.Vehicles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (vehicles == null)
+            if (vehicle == null)
             {
                 return NotFound();
             }
 
-            return View(vehicles);
+            return View(vehicle);
         }
 
         // GET: Vehicles/Create
@@ -52,7 +54,7 @@ namespace ProjetoOficinaWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Vehicle vehicle)
+        public async Task<IActionResult> Create([Bind("Id,LicensePlate,Brand,Model,Color,ImageUrl,Date,Email")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -84,7 +86,7 @@ namespace ProjetoOficinaWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Vehicle vehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,LicensePlate,Brand,Model,Color,ImageUrl,Date,Email")] Vehicle vehicle)
         {
             if (id != vehicle.Id)
             {
@@ -137,8 +139,8 @@ namespace ProjetoOficinaWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var product = await _context.Vehicles.FindAsync(id);
-            _context.Vehicles.Remove(product);
+            var vehicle = await _context.Vehicles.FindAsync(id);
+            _context.Vehicles.Remove(vehicle);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -149,4 +151,3 @@ namespace ProjetoOficinaWeb.Controllers
         }
     }
 }
-
