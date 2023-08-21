@@ -12,29 +12,29 @@ namespace ProjetoOficinaWeb.Controllers
 {
     public class RepairsController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IRepairRepository _repairRepository;
 
-        public RepairsController(DataContext context)
+        public RepairsController(IRepairRepository repairRepository)
         {
-            _context = context;
+            _repairRepository = repairRepository;
         }
 
         // GET: Repairs
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Repairs.ToListAsync());
+            return View(_repairRepository.GetAll());
         }
 
         // GET: Repairs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public  async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var repair = await _context.Repairs
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var repair = await _repairRepository.GetByIdAsync(id.Value);
+                
             if (repair == null)
             {
                 return NotFound();
@@ -54,12 +54,11 @@ namespace ProjetoOficinaWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Vehicle,VehicleId,Service,ServiceId,Appointment,AppointmentId,Mechanic")] Repair repair)
+        public async Task<IActionResult> Create([Bind("Id,Vehicle,LicensePlate,Service,ServiceId,Appointment,AppointmentId,Mechanic")] Repair repair)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(repair);
-                await _context.SaveChangesAsync();
+                await _repairRepository.CreateAsync(repair);
                 return RedirectToAction(nameof(Index));
             }
             return View(repair);
@@ -73,7 +72,7 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var repair = await _context.Repairs.FindAsync(id);
+            var repair =await _repairRepository.GetByIdAsync(id.Value);
             if (repair == null)
             {
                 return NotFound();
@@ -86,7 +85,7 @@ namespace ProjetoOficinaWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Vehicle,VehicleId,Service,ServiceId,Appointment,AppointmentId,Mechanic")] Repair repair)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Vehicle,LicensePlate,Service,ServiceId,Appointment,AppointmentId,Mechanic")] Repair repair)
         {
             if (id != repair.Id)
             {
@@ -97,12 +96,11 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                    _context.Update(repair);
-                    await _context.SaveChangesAsync();
+                    _repairRepository.UpdateAsync(repair);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RepairExists(repair.Id))
+                    if (!await _repairRepository.ExistAsync(repair.Id))
                     {
                         return NotFound();
                     }
@@ -123,9 +121,8 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 return NotFound();
             }
+            var repair = _repairRepository.GetByIdAsync(id.Value);
 
-            var repair = await _context.Repairs
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (repair == null)
             {
                 return NotFound();
@@ -139,15 +136,11 @@ namespace ProjetoOficinaWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var repair = await _context.Repairs.FindAsync(id);
-            _context.Repairs.Remove(repair);
-            await _context.SaveChangesAsync();
+            var repair = await _repairRepository.GetByIdAsync(id);
+           await _repairRepository.DeleteAsync(repair);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RepairExists(int id)
-        {
-            return _context.Repairs.Any(e => e.Id == id);
-        }
+        
     }
 }

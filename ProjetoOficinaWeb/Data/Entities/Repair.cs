@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ProjetoOficinaWeb.Data.Entities
 {
-    public class Repair : IEntity
+    public class Repair : IEntity 
     {
         public int Id { get; set; }
 
         public string  Vehicle { get; set; }
 
-        public string  VehicleId { get; set; }
+
+        [Required]
+        [Display(Name = "License Plate")]
+        public string LicensePlate { get; set; }
 
         public string Service { get; set; }
 
         public string ServiceId { get; set; }
 
-        public string  Appointment { get; set; }
+        public DateTime Appointment { get; set; }
 
         public string AppointmentId { get; set; }
-
+        [Required]
         public string Mechanic { get; set; }
     }
 }

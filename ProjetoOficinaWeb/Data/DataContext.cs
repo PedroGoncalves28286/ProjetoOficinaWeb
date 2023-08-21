@@ -5,8 +5,8 @@ namespace ProjetoOficinaWeb.Data
 {
     public class DataContext : DbContext
     {
-        public DbSet<Appointment> Appointments { get; set; }   
-        public DbSet<Mechanic> Mechanics { get; set; } 
+        public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Mechanic> Mechanics { get; set; }
         public DbSet<Repair> Repairs { get; set; }
 
         public DbSet<Service> Services { get; set; }
@@ -17,7 +17,7 @@ namespace ProjetoOficinaWeb.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
-            
+
 
         }
     }

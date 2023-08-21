@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,30 +13,33 @@ namespace ProjetoOficinaWeb.Controllers
 {
     public class MechanicsController : Controller
     {
-        private readonly DataContext _context;
+        private readonly IMechanicRepository _mechanicRepository;
 
-        public MechanicsController(DataContext context)
+        
+
+        public MechanicsController(IMechanicRepository mechanicRepository)
         {
-            _context = context;
+            _mechanicRepository = mechanicRepository;
         }
 
         // GET: Mechanics
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Mechanics.ToListAsync());
+            return View(_mechanicRepository.GetAll());
         }
 
         // GET: Mechanics/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public  async Task<IActionResult> Details (int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var mechanic = await _context.Mechanics
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (mechanic == null)
+            var mechanic = await _mechanicRepository.GetByIdAsync(id.Value);
+            if(mechanic ==null)
+             
+            
             {
                 return NotFound();
             }
@@ -58,22 +62,21 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(mechanic);
-                await _context.SaveChangesAsync();
+                await _mechanicRepository.CreateAsync(mechanic);
                 return RedirectToAction(nameof(Index));
             }
             return View(mechanic);
         }
 
         // GET: Mechanics/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit (int?id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var mechanic = await _context.Mechanics.FindAsync(id);
+            var mechanic = await _mechanicRepository.GetByIdAsync(id.Value);
             if (mechanic == null)
             {
                 return NotFound();
@@ -97,12 +100,11 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                    _context.Update(mechanic);
-                    await _context.SaveChangesAsync();
+                  await _mechanicRepository.UpdateAsync(mechanic);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MechanicExists(mechanic.Id))
+                    if  (!await _mechanicRepository.ExistAsync(mechanic.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +126,7 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var mechanic = await _context.Mechanics
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var mechanic = await _mechanicRepository.GetByIdAsync(id.Value);
             if (mechanic == null)
             {
                 return NotFound();
@@ -139,15 +140,11 @@ namespace ProjetoOficinaWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var mechanic = await _context.Mechanics.FindAsync(id);
-            _context.Mechanics.Remove(mechanic);
-            await _context.SaveChangesAsync();
+            var mechanic = await _mechanicRepository.GetByIdAsync(id);
+            await _mechanicRepository.DeleteAsync(mechanic);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MechanicExists(int id)
-        {
-            return _context.Mechanics.Any(e => e.Id == id);
-        }
+        
     }
 }

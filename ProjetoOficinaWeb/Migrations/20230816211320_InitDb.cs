@@ -45,10 +45,10 @@ namespace ProjetoOficinaWeb.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Vehicle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VehicleId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LicensePlate = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Service = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ServiceId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Appointment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Appointment = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AppointmentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Mechanic = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

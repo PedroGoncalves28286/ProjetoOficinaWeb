@@ -10,8 +10,8 @@ using ProjetoOficinaWeb.Data;
 namespace ProjetoOficinaWeb.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230812222437_InitDb")]
-    partial class InitDb
+    [Migration("20230817144923_ModifyEntities")]
+    partial class ModifyEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,7 @@ namespace ProjetoOficinaWeb.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Subject")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -53,12 +54,14 @@ namespace ProjetoOficinaWeb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Specialization")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -73,13 +76,18 @@ namespace ProjetoOficinaWeb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Appointment")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Appointment")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("AppointmentId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LicensePlate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Mechanic")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Service")
@@ -89,9 +97,6 @@ namespace ProjetoOficinaWeb.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Vehicle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VehicleId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -107,6 +112,7 @@ namespace ProjetoOficinaWeb.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Price")

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjetoOficinaWeb.Data;
+using ProjetoOficinaWeb.Data.Entities;
 
 namespace ProjetoOficinaWeb
 {
@@ -25,6 +26,12 @@ namespace ProjetoOficinaWeb
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddTransient<SeedDb>();
+            services.AddScoped<IAppointmentRepository ,AppointmentRepository>();
+            services.AddScoped<IMechanicRepository ,MechanicRepository>();
+            services.AddScoped<IRepairRepository ,RepairRepository>();
+            services.AddScoped<IServiceRepository ,ServiceRepository>();
+            services.AddScoped<IVehicleRepository ,VehicleRepository>();
             
 
             services.AddControllersWithViews();

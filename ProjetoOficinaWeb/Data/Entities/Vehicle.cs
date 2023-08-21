@@ -4,7 +4,7 @@ using System.Security.Principal;
 
 namespace ProjetoOficinaWeb.Data.Entities
 {
-    public class Vehicle
+    public class Vehicle :IEntity
     {
         public int Id { get; set; }
 

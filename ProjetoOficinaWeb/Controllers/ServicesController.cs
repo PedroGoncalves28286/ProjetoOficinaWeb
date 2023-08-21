@@ -12,17 +12,18 @@ namespace ProjetoOficinaWeb.Controllers
 {
     public class ServicesController : Controller
     {
-        private readonly DataContext _context;
+        
+        private readonly IServiceRepository _serviceRepository;
 
-        public ServicesController(DataContext context)
+        public ServicesController(IServiceRepository serviceRepository)
         {
-            _context = context;
+            _serviceRepository = serviceRepository;
         }
 
         // GET: Services
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Services.ToListAsync());
+            return View(_serviceRepository.GetAll());
         }
 
         // GET: Services/Details/5
@@ -33,8 +34,8 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var service = await _context.Services
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var service = await _serviceRepository.GetByIdAsync(id.Value);
+                
             if (service == null)
             {
                 return NotFound();
@@ -58,8 +59,8 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(service);
-                await _context.SaveChangesAsync();
+                await _serviceRepository.CreateAsync(service);
+               
                 return RedirectToAction(nameof(Index));
             }
             return View(service);
@@ -73,7 +74,7 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var service = await _context.Services.FindAsync(id);
+            var service = await _serviceRepository.GetByIdAsync(id.Value);
             if (service == null)
             {
                 return NotFound();
@@ -97,12 +98,12 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                    _context.Update(service);
-                    await _context.SaveChangesAsync();
+                  await _serviceRepository.UpdateAsync(service);
+                 
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ServiceExists(service.Id))
+                    if (! await _serviceRepository.ExistAsync(service.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +125,8 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var service = await _context.Services
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var service = await _serviceRepository.GetByIdAsync(id.Value);
+                
             if (service == null)
             {
                 return NotFound();
@@ -139,15 +140,11 @@ namespace ProjetoOficinaWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var service = await _context.Services.FindAsync(id);
-            _context.Services.Remove(service);
-            await _context.SaveChangesAsync();
+            var service = await _serviceRepository.GetByIdAsync((int)id);
+            await _serviceRepository.DeleteAsync(service);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ServiceExists(int id)
-        {
-            return _context.Services.Any(e => e.Id == id);
-        }
+       
     }
 }

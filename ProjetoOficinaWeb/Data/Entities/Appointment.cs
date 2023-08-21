@@ -10,10 +10,10 @@ namespace ProjetoOficinaWeb.Data.Entities
     {
         public int Id { get; set; }
 
-        public string AppointmentId { get; set; }    
-
-        public DateTime Date { get; set; }  
-
+        public string AppointmentId { get; set; }
+        [Required]
+        public DateTime Date { get; set; }
+        [Required]
         public string Subject { get; set; } 
 
        
