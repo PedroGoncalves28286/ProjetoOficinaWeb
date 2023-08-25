@@ -3,7 +3,7 @@ using System.Security.Principal;
 
 namespace ProjetoOficinaWeb.Data.Entities
 {
-    public class Service :IEntity
+    public class Service : IEntity
     {
         public int Id { get; set; }
 
@@ -12,5 +12,7 @@ namespace ProjetoOficinaWeb.Data.Entities
 
         [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = false)]
         public int Price { get; set; }
+
+        public User User { get; set; }
     }
 }

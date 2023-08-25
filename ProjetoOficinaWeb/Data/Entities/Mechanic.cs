@@ -18,6 +18,8 @@ namespace ProjetoOficinaWeb.Data.Entities
 
         public string Photo { get; set; }
 
+        public User User { get; set; }
+
 
 
     }

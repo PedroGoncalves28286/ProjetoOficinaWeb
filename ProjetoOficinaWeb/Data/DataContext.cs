@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data.Entities;
 
 namespace ProjetoOficinaWeb.Data
 {
-    public class DataContext : DbContext
-    {
+    
+    public class DataContext : IdentityDbContext<User>
+    { 
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Mechanic> Mechanics { get; set; }
         public DbSet<Repair> Repairs { get; set; }

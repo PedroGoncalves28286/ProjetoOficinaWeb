@@ -21,11 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Model)
             </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.Color)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Date)
@@ -33,11 +31,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAvailable)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+ @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.LicensePlate)
@@ -52,14 +53,20 @@
                 @Html.DisplayFor(modelItem => item.Color)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
+                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                    {
+                        <img src ="@Url.Content(item.ImageUrl)" alt="Image" style="width:300px;height:450px;max-width:100%;height:auto">
+                    }
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsAvailable)
+                </td>
             <td>
                     <a asp-action="Edit" asp-route-id="@item.Id" class=" btn btn-warning">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a> |

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data;
 using ProjetoOficinaWeb.Data.Entities;
+using ProjetoOficinaWeb.Helpers;
 
 namespace ProjetoOficinaWeb.Controllers
 {
@@ -14,16 +15,19 @@ namespace ProjetoOficinaWeb.Controllers
     {
         
         private readonly IServiceRepository _serviceRepository;
+        private readonly IUserHelper _userHelper;
 
-        public ServicesController(IServiceRepository serviceRepository)
+        public ServicesController(IServiceRepository serviceRepository, 
+            IUserHelper userHelper)
         {
             _serviceRepository = serviceRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Services
         public IActionResult Index()
         {
-            return View(_serviceRepository.GetAll());
+            return View(_serviceRepository.GetAll().OrderBy(p => p.Id));
         }
 
         // GET: Services/Details/5
@@ -59,13 +63,14 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                service.User = await _userHelper.GetUserByEmailAsync("pedromfonsecagoncalves@gmail.com");
                 await _serviceRepository.CreateAsync(service);
-               
                 return RedirectToAction(nameof(Index));
             }
             return View(service);
         }
 
+        
         // GET: Services/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -98,7 +103,8 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                  await _serviceRepository.UpdateAsync(service);
+                    
+                    await _serviceRepository.UpdateAsync(service);
                  
                 }
                 catch (DbUpdateConcurrencyException)

@@ -1,34 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data;
 using ProjetoOficinaWeb.Data.Entities;
+using ProjetoOficinaWeb.Helpers;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjetoOficinaWeb.Controllers
 {
     public class AppointmentsController : Controller
     {
-        
-        private readonly IAppointmentRepository _appointmentRepository;
 
-        public AppointmentsController(IAppointmentRepository appointmentRepository)
+        private readonly IAppointmentRepository _appointmentRepository;
+        private readonly IUserHelper _userHelper;
+
+        public AppointmentsController(IAppointmentRepository appointmentRepository,
+            IUserHelper userHelper)
         {
-            
+
             _appointmentRepository = appointmentRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Appointments
         public IActionResult Index()
         {
-            return View(_appointmentRepository.GetAll());
+            return View(_appointmentRepository.GetAll().OrderBy(p => p.Id));
         }
 
         // GET: Appointments/Details/5
-        public async Task<IActionResult> Details (int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -36,7 +37,7 @@ namespace ProjetoOficinaWeb.Controllers
             }
 
             var appointment = await _appointmentRepository.GetByIdAsync(id.Value);
-                
+
             if (appointment == null)
             {
                 return NotFound();
@@ -60,6 +61,8 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO :Modificar para o user que estiver logado 
+                appointment.User = await _userHelper.GetUserByEmailAsync("pedromfonsecagoncalves@gmail.com");
                 await _appointmentRepository.CreateAsync(appointment);
                 return RedirectToAction(nameof(Index));
             }
@@ -67,14 +70,14 @@ namespace ProjetoOficinaWeb.Controllers
         }
 
         // GET: Appointments/Edit/5
-        public async Task<IActionResult> Edit (int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var appointment =await  _appointmentRepository.GetByIdAsync(id.Value);
+            var appointment = await _appointmentRepository.GetByIdAsync(id.Value);
             if (appointment == null)
             {
                 return NotFound();
@@ -98,7 +101,8 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                  await _appointmentRepository.UpdateAsync(appointment);
+                   
+                    await _appointmentRepository.UpdateAsync(appointment);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +128,7 @@ namespace ProjetoOficinaWeb.Controllers
                 return NotFound();
             }
 
-            var appointment =await _appointmentRepository.GetByIdAsync(id.Value);              
+            var appointment = await _appointmentRepository.GetByIdAsync(id.Value);
             if (appointment == null)
             {
                 return NotFound();
@@ -143,6 +147,6 @@ namespace ProjetoOficinaWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
     }
 }

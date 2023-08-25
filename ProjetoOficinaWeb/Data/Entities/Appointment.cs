@@ -12,9 +12,11 @@ namespace ProjetoOficinaWeb.Data.Entities
 
         public string AppointmentId { get; set; }
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; }      
         [Required]
         public string Subject { get; set; } 
+
+        public User User { get; set; }  
 
        
 

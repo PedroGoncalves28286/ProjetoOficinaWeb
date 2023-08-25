@@ -1,35 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AspNetCore;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data;
 using ProjetoOficinaWeb.Data.Entities;
+using ProjetoOficinaWeb.Helpers;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjetoOficinaWeb.Controllers
 {
     public class MechanicsController : Controller
     {
         private readonly IMechanicRepository _mechanicRepository;
+        private readonly IUserHelper _userHelper;
 
-        
-
-        public MechanicsController(IMechanicRepository mechanicRepository)
+        public MechanicsController(IMechanicRepository mechanicRepository, 
+            IUserHelper userHelper)
         {
             _mechanicRepository = mechanicRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Mechanics
         public IActionResult Index()
         {
-            return View(_mechanicRepository.GetAll());
+            return View(_mechanicRepository.GetAll().OrderBy(p => p.Name));
         }
 
         // GET: Mechanics/Details/5
-        public  async Task<IActionResult> Details (int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -37,9 +35,9 @@ namespace ProjetoOficinaWeb.Controllers
             }
 
             var mechanic = await _mechanicRepository.GetByIdAsync(id.Value);
-            if(mechanic ==null)
-             
-            
+            if (mechanic == null)
+
+
             {
                 return NotFound();
             }
@@ -62,6 +60,8 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO:Modificar para o user que estiver logado 
+                mechanic.User = await _userHelper.GetUserByEmailAsync("pedromfonsecagoncalves@gmail.com");
                 await _mechanicRepository.CreateAsync(mechanic);
                 return RedirectToAction(nameof(Index));
             }
@@ -69,7 +69,7 @@ namespace ProjetoOficinaWeb.Controllers
         }
 
         // GET: Mechanics/Edit/5
-        public async Task<IActionResult> Edit (int?id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -100,11 +100,12 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                  await _mechanicRepository.UpdateAsync(mechanic);
+                    
+                    await _mechanicRepository.UpdateAsync(mechanic);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if  (!await _mechanicRepository.ExistAsync(mechanic.Id))
+                    if (!await _mechanicRepository.ExistAsync(mechanic.Id))
                     {
                         return NotFound();
                     }
@@ -145,6 +146,6 @@ namespace ProjetoOficinaWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
     }
 }

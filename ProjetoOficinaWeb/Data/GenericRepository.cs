@@ -17,13 +17,13 @@ namespace ProjetoOficinaWeb.Data
 
         public IQueryable<T> GetAll()
         {
-            return _context.Set<T>().AsNoTracking();
+            return _context.Set<T>().AsNoTracking().OrderBy(e => e.Id);  
         }
         public async Task<T> GetByIdAsync(int id)
         {
             return await _context.Set<T>()
                 .AsNoTracking()
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
 
         public async Task CreateAsync(T entity)

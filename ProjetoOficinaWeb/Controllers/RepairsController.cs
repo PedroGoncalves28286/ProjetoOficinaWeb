@@ -7,22 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data;
 using ProjetoOficinaWeb.Data.Entities;
+using ProjetoOficinaWeb.Helpers;
 
 namespace ProjetoOficinaWeb.Controllers
 {
     public class RepairsController : Controller
     {
         private readonly IRepairRepository _repairRepository;
+        private readonly IUserHelper _userHelper;
 
-        public RepairsController(IRepairRepository repairRepository)
+        public RepairsController(IRepairRepository repairRepository,
+            IUserHelper userHelper)
         {
             _repairRepository = repairRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Repairs
         public IActionResult Index()
         {
-            return View(_repairRepository.GetAll());
+            return View(_repairRepository.GetAll().OrderBy(p => p.Id));
         }
 
         // GET: Repairs/Details/5
@@ -58,6 +62,8 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO:Modificar para o user que estiver logado 
+                repair.User = await _userHelper.GetUserByEmailAsync("pedromfonsecagoncalves@gmail.com");
                 await _repairRepository.CreateAsync(repair);
                 return RedirectToAction(nameof(Index));
             }
@@ -96,7 +102,8 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                    _repairRepository.UpdateAsync(repair);
+                   
+                    await _repairRepository.UpdateAsync(repair);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,7 +128,7 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 return NotFound();
             }
-            var repair = _repairRepository.GetByIdAsync(id.Value);
+            var repair = await _repairRepository.GetByIdAsync(id.Value);
 
             if (repair == null)
             {

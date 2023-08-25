@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace ProjetoOficinaWeb.Data.Entities
 {
-    public class Repair : IEntity 
+    public class Repair : IEntity
     {
         public int Id { get; set; }
 
@@ -28,5 +28,7 @@ namespace ProjetoOficinaWeb.Data.Entities
         public string AppointmentId { get; set; }
         [Required]
         public string Mechanic { get; set; }
+
+        public User User { get; set; }
     }
 }
