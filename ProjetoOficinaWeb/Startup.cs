@@ -40,6 +40,7 @@ namespace ProjetoOficinaWeb
             services.AddDbContext<DataContext>(cfg =>
             {
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
+                
             });
 
             services.AddTransient<SeedDb>();
@@ -52,6 +53,8 @@ namespace ProjetoOficinaWeb
             services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
+            services.AddScoped<IBlobHelper ,BlobHelper>();
+
 
 
             services.AddControllersWithViews();

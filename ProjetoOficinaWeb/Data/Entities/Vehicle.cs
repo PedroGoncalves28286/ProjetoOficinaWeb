@@ -19,7 +19,7 @@ namespace ProjetoOficinaWeb.Data.Entities
         public string Color { get; set; }
 
         [Display(Name = "Image")]
-        public string ImageUrl { get; set; }
+        public Guid ImageId { get; set; }
 
         public DateTime Date { get; set; }
 
@@ -30,18 +30,10 @@ namespace ProjetoOficinaWeb.Data.Entities
 
 
         public User User { get; set; }
-        
-        public string ImageFullPath
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(ImageUrl))
-                {
-                    return null;
-                }
-                return $"https://localhost:44350{ImageUrl.Substring(1)}";
-            }
-        }
+
+        public string ImageFullPath => ImageId == Guid.Empty
+            ? $"https://projetooficinaweb.azurewebsites.net/images/no_image.png"
+            : $"https://oficinaarmazenamento.blob.core.windows.net/vehicles/{ImageId}";
 
        
     }

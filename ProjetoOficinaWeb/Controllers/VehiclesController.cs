@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,20 +14,21 @@ using ProjetoOficinaWeb.Models;
 
 namespace ProjetoOficinaWeb.Controllers
 {
+    [Authorize]
     public class VehiclesController : Controller
     {
         private readonly IVehicleRepository _vehicleRepository;
         private readonly IUserHelper _userHelper;
-        private readonly IImageHelper _imageHelper;
+        private readonly IBlobHelper _blobHelper;
         private readonly IConverterHelper _converterHelper;
 
         public VehiclesController(IVehicleRepository vehicleRepository,
-           IUserHelper userHelper, IImageHelper imageHelper,IConverterHelper converterHelper)
+           IUserHelper userHelper, IBlobHelper blobHelper,IConverterHelper converterHelper)
         {
 
             _vehicleRepository = vehicleRepository;
-            _userHelper = userHelper;
-            _imageHelper = imageHelper;
+            _userHelper = userHelper;  
+            _blobHelper = blobHelper;
             _converterHelper = converterHelper;
         }    
 
@@ -54,6 +56,8 @@ namespace ProjetoOficinaWeb.Controllers
         }
 
         // GET: Vehicles/Create
+
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -62,33 +66,37 @@ namespace ProjetoOficinaWeb.Controllers
         // POST: Vehicles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(VehicleViewModel view)
         {
             if (ModelState.IsValid)
             {
-                var path = string.Empty;
+                Guid imageId = Guid.Empty;
 
                 if(view.ImageFile != null && view.ImageFile.Length > 0)
                 {
 
-                    path = await _imageHelper.UploadImageAsync(view.ImageFile,"vehicles");
+                    imageId = await _blobHelper.UploadBlobAsync(view.ImageFile,"vehicles");
+                        
                 }
 
-                var vehicle = _converterHelper.ToVehicle(view, path, true);
+                var vehicle = _converterHelper.ToVehicle(view, imageId, true);
 
                 //TODO:Modificar para o user que estiver logado 
-                vehicle.User = await _userHelper.GetUserByEmailAsync("pedromfonsecagoncalves@gmail.com");
+                vehicle.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 await _vehicleRepository.CreateAsync(vehicle);
                 return RedirectToAction(nameof(Index));        
             }
             return View(view);
         }
 
-        
+
 
         // GET: Vehicles/Edit/5
+
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -119,18 +127,16 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                    var path = view.ImageUrl; 
+                    Guid imageId = view.ImageId;
 
                     if(view.ImageFile != null && view.ImageFile.Length > 0)
                     {
-                        var guid =Guid.NewGuid().ToString();
-                        var file = $"{guid}.jpg";
 
-                        path = await _imageHelper.UploadImageAsync(view.ImageFile, "vehicles");
+                          imageId = await _blobHelper.UploadBlobAsync(view.ImageFile, "vehicles"); 
 
                        
                     }
-                    var vehicle = _converterHelper.ToVehicle(view, path, false);
+                    var vehicle = _converterHelper.ToVehicle(view, imageId, false);
 
                     // Todo:Modificar para o user que estiver logado 
                     vehicle.User = await _userHelper.GetUserByEmailAsync("pedromfonsecagoncalves@gmail.com");
@@ -155,6 +161,8 @@ namespace ProjetoOficinaWeb.Controllers
         }
 
         // GET: Vehicles/Delete/5
+
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
