@@ -35,14 +35,14 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ServiceNotFound"); 
             }
 
             var service = await _serviceRepository.GetByIdAsync(id.Value);
                 
             if (service == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ServiceNotFound");
             }
 
             return View(service);
@@ -76,13 +76,13 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ServicesNotFound");
             }
 
             var service = await _serviceRepository.GetByIdAsync(id.Value);
             if (service == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ServicesNotFound");
             }
             return View(service);
         }
@@ -128,14 +128,14 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ServicesNotFound");
             }
 
             var service = await _serviceRepository.GetByIdAsync(id.Value);
                 
             if (service == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("ServicesNotFound");
             }
 
             return View(service);
@@ -149,6 +149,10 @@ namespace ProjetoOficinaWeb.Controllers
             var service = await _serviceRepository.GetByIdAsync((int)id);
             await _serviceRepository.DeleteAsync(service);
             return RedirectToAction(nameof(Index));
+        }
+        public IActionResult ServiceNotFound()
+        {
+            return View();
         }
 
        

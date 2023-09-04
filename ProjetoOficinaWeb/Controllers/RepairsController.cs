@@ -34,14 +34,14 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RepairNotFound");
             }
 
             var repair = await _repairRepository.GetByIdAsync(id.Value);
                 
             if (repair == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RepairNotFound");
             }
 
             return View(repair);
@@ -75,15 +75,15 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RepairNotFound");
             }
 
             var repair =await _repairRepository.GetByIdAsync(id.Value);
             if (repair == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RepairNotFound");
             }
-            return View(repair);
+                return View(repair);
         }
 
         // POST: Repairs/Edit/5
@@ -126,13 +126,13 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RepairNotFound");
             }
             var repair = await _repairRepository.GetByIdAsync(id.Value);
 
             if (repair == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("RepairNotFound");
             }
 
             return View(repair);
@@ -148,6 +148,10 @@ namespace ProjetoOficinaWeb.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+        public IActionResult RepairNotFound()
+        {
+            return View();
+        }
+
     }
 }

@@ -31,7 +31,7 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MechanicNotFound");
             }
 
             var mechanic = await _mechanicRepository.GetByIdAsync(id.Value);
@@ -39,7 +39,7 @@ namespace ProjetoOficinaWeb.Controllers
 
 
             {
-                return NotFound();
+                return new NotFoundViewResult("MechanicNotFound"); ;
             }
 
             return View(mechanic);
@@ -73,13 +73,13 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MechanicsNotFound");
             }
 
             var mechanic = await _mechanicRepository.GetByIdAsync(id.Value);
             if (mechanic == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MechanicsNotFound");
             }
             return View(mechanic);
         }
@@ -124,13 +124,13 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MechanicNotFound");
             }
 
             var mechanic = await _mechanicRepository.GetByIdAsync(id.Value);
             if (mechanic == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("MechanicNotFound");
             }
 
             return View(mechanic);
@@ -145,6 +145,12 @@ namespace ProjetoOficinaWeb.Controllers
             await _mechanicRepository.DeleteAsync(mechanic);
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult MechanicNotFound()
+        {
+            return View();
+        }
+
 
 
     }

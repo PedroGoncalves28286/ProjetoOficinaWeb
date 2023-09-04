@@ -9,13 +9,13 @@ namespace ProjetoOficinaWeb.Models
         public string FirstName { get; set; }
 
         [Required]
-        [Display(Name = "Laste Name")]
-        public string LastName { get; set; }
+        [Display(Name = "Last Name")]
+        public string Lastname { get; set; }
 
 
         [Required]
         [DataType(DataType.EmailAddress)]
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
 
         [Required]

@@ -18,7 +18,7 @@ namespace ProjetoOficinaWeb.Controllers.API
         [HttpGet]
         public IActionResult GetRepairs()
         {
-            return Ok( _repairRepository.GetAll());
+            return Ok( _repairRepository.GetAllWithUsers());
         }
     }
 }

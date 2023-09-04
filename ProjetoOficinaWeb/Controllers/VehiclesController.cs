@@ -43,13 +43,13 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+              return new NotFoundViewResult("VehiclesNotFound");
             }
 
             var vehicle = await _vehicleRepository.GetByIdAsync(id.Value);
             if (vehicle == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VehiclesNotFound");
             }
 
             return View(vehicle);
@@ -57,7 +57,7 @@ namespace ProjetoOficinaWeb.Controllers
 
         // GET: Vehicles/Create
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -101,13 +101,13 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VehiclesNotFound");
             }
 
             var vehicle = await _vehicleRepository.GetByIdAsync(id.Value);
             if (vehicle == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VehiclesNotFound");
             }
 
             var model = _converterHelper.ToVehicleViewModel(vehicle);
@@ -139,7 +139,7 @@ namespace ProjetoOficinaWeb.Controllers
                     var vehicle = _converterHelper.ToVehicle(view, imageId, false);
 
                     // Todo:Modificar para o user que estiver logado 
-                    vehicle.User = await _userHelper.GetUserByEmailAsync("pedromfonsecagoncalves@gmail.com");
+                    vehicle.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     await _vehicleRepository.UpdateAsync(vehicle);
                     
                 }
@@ -167,14 +167,14 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VehiclesNotFound");
             }
 
             var vehicle = await _vehicleRepository.GetByIdAsync(id.Value);
                 
             if (vehicle == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("VehiclesNotFound");
             }
 
             return View(vehicle);
@@ -189,7 +189,13 @@ namespace ProjetoOficinaWeb.Controllers
             await _vehicleRepository.DeleteAsync(vehicle);
             return RedirectToAction(nameof(Index));
         }
+        
+        public IActionResult VehicleNotFound()
+        {
+            return View();
+        }
 
+       
         
     }
 }

@@ -18,7 +18,7 @@ namespace ProjetoOficinaWeb.Controllers.API
         [HttpGet]
         public IActionResult GetMechanics()
         {
-            return Ok(_mechanicRepository.GetAll());
+            return Ok(_mechanicRepository.GetAllWithUsers());
         }
     }
 }

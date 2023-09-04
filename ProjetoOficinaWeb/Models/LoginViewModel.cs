@@ -6,7 +6,7 @@ namespace ProjetoOficinaWeb.Models
     {
         [Required]
         [EmailAddress] 
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         [Required]
         [MinLength(6)]

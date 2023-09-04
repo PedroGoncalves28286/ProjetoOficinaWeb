@@ -33,14 +33,14 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AppointmentNotFound");
             }
 
             var appointment = await _appointmentRepository.GetByIdAsync(id.Value);
 
             if (appointment == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AppointmentNotFound");
             }
 
             return View(appointment);
@@ -125,13 +125,13 @@ namespace ProjetoOficinaWeb.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AppointmentNotFound");
             }
 
             var appointment = await _appointmentRepository.GetByIdAsync(id.Value);
             if (appointment == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("AppointmentNotFound");
             }
 
             return View(appointment);
@@ -146,6 +146,11 @@ namespace ProjetoOficinaWeb.Controllers
             await _appointmentRepository.DeleteAsync(appointment);
             return RedirectToAction(nameof(Index));
         }
+        public IActionResult AppointmentsNotFound()
+        {
+            return View();
+        }
+
 
 
     }
