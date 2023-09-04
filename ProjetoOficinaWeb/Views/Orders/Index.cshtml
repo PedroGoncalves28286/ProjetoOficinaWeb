@@ -25,13 +25,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Lines)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Value)
-            </th>
+            </th>    
             <th></th>
         </tr>
     </thead>
@@ -54,12 +48,6 @@
                 <td>
                     @Html.DisplayNameFor(model => model.Lines)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <th>
-                    @Html.DisplayNameFor(model => model.Value)
-                </th>
                 <td>
                     <a asp-action="Deliver" asp-route-id="@item.Id" class="btn btn-info" id="btnDeliver">Deliver</a>
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>

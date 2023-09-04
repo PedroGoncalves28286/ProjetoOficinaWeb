@@ -4,9 +4,9 @@ using ProjetoOficinaWeb.Data.Entities;
 
 namespace ProjetoOficinaWeb.Data
 {
-    
+
     public class DataContext : IdentityDbContext<User>
-    { 
+    {
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<Mechanic> Mechanics { get; set; }
         public DbSet<Repair> Repairs { get; set; }
@@ -25,8 +25,7 @@ namespace ProjetoOficinaWeb.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
-
-
         }
-    }
+        
+    }    
 }

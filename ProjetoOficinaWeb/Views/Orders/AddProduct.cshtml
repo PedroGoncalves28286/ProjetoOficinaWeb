@@ -15,15 +15,10 @@
 
             <div class="form-group">
                 <label asp-for="ServiceId" class="control-label"></label>
-                <select asp-for="ServiceId" asp-items="Model.Services" class="form-control"></select>
+                <select asp-for="ServiceId" asp-items="Model.Service" class="form-control"></select>
                 <span asp-validation-for="ServiceId" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label asp-for ="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
             
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

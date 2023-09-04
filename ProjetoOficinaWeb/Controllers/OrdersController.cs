@@ -18,8 +18,7 @@ namespace ProjetoOficinaWeb.Controllers
             _orderRepository = orderRepository;
             _serviceRepository = serviceRepository;
         }
-
-        public async Task<IActionResult> Index()
+            public async Task<IActionResult> Index()
         {
             var model = await _orderRepository.GetOrderAsync(this.User.Identity.Name);
             return View(model);
@@ -31,12 +30,12 @@ namespace ProjetoOficinaWeb.Controllers
             return View(model);
         }
 
-        public IActionResult AddServices()
+        public IActionResult AddService()
         {
             var model = new AddItemViewModel
             {
-                Quantity = 1,
-                Services = _serviceRepository.GetComboServices()
+               
+                Service= _serviceRepository.GetComboServices()
             };
 
             return View(model);
@@ -65,27 +64,7 @@ namespace ProjetoOficinaWeb.Controllers
             return RedirectToAction("Create");
         }
 
-        public async Task<IActionResult> Increase(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            await _orderRepository.ModifyOrderDetailTempQuantityAsync(id.Value, 1);
-            return RedirectToAction("Create");
-        }
-
-        public async Task<IActionResult> Decrease(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            await _orderRepository.ModifyOrderDetailTempQuantityAsync(id.Value, -1);
-            return RedirectToAction("Create");
-        }
+       
 
         public async Task<IActionResult> ConfirmOrder()
         {

@@ -45,17 +45,13 @@ namespace ProjetoOficinaWeb.Data
                 {
                     Description = service.Description,
                     Price = service.Price,
-                    Quantity = model.Quantity,
+                   
                     User = user
                 };
 
                 _context.OrderDetailsTemp.Add(orderDetailTemp);
             }
-            else
-            {
-                orderDetailTemp.Quantity += model.Quantity;
-                _context.OrderDetailsTemp.Update(orderDetailTemp);
-            }
+            
 
             await _context.SaveChangesAsync();
         }
@@ -80,9 +76,9 @@ namespace ProjetoOficinaWeb.Data
 
             var details = orderTemps.Select(o => new OrderDetail
             {
+                Description = o.Description,
                 Price = o.Price,
-                Service = o.Service,
-                Quantity = o.Quantity
+                
             }).ToList();
 
             var order = new Order

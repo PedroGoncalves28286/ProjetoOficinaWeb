@@ -1,62 +1,27 @@
-﻿@model ProjetoOficinaWeb.Data.Entities.Repair
+﻿@model ProjetoOficinaWeb.Data.Entities.Service
 @{
-    ViewData["Title"] = "AddRepair";
+    ViewData["Title"] = "AddService";
 }
-<h2>AddRepair</h2>
+<h2>Add Service</h2>
 <h4>To Order</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddRepair">
+        <form asp-action="AddService">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <select asp-for="Id" asp-items="ViewBag.Id" class="form-control">
+                <label asp-for="Description" class="control-label"></label>
+                <select asp-for="Description" asp-items="ViewBag.Id" class="form-control">
                     <option value="">Select an Option</option>
                 </select>
-                <span asp-validation-for="Id" class="text-danger"></span>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="Vehicle" class="control-label"></label>
-                <input asp-for="Vehicle" class="form-control" />
-                <span asp-validation-for="Vehicle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LicensePlate" class="control-label"></label>
-                <input asp-for="LicensePlate" class="form-control" />
-                <span asp-validation-for="LicensePlate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Service" class="control-label"></label>
-                <input asp-for="Service" class="form-control" />
-                <span asp-validation-for="Service" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ServiceId" class="control-label"></label>
-                <input asp-for="ServiceId" class="form-control" />
-                <span asp-validation-for="ServiceId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AppointmentId" class="control-label"></label>
-                <input asp-for="AppointmentId" class="form-control" />
-                <span asp-validation-for="AppointmentId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ServiceId" class="control-label"></label>
-                <input asp-for="ServiceId" class="form-control" />
-                <span asp-validation-for="ServiceId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Mechanic" class="control-label"></label>
-                <input asp-for="Mechanic" class="form-control" />
-                <span asp-validation-for="Mechanic" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="User" class="control-label"></label>
-                <input asp-for="User" class="form-control" />
-                <span asp-validation-for="User" class="text-danger"></span>
-            </div>
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>       
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-success">Back to List</a>

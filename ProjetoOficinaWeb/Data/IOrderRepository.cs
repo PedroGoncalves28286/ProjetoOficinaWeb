@@ -13,7 +13,7 @@ namespace ProjetoOficinaWeb.Data
 
         Task AddItemToOrderAsync(AddItemViewModel model, string userName);
 
-        Task ModifyOrderDetailTempQuantityAsync(int id, double quantity);
+      
 
         Task DeleteDetailTempAsync(int id);
 
