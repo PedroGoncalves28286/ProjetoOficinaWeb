@@ -8,7 +8,7 @@
 
 
 <p>
-    <a asp-action="AddCreate" class="btn btn-success">Add Repair</a>
+    <a asp-action="AddService" class="btn btn-success">Add Service</a>
     <a asp-action="ConfirmOrder" class="btn btn-primary" id="btnConfirm">Confirm Order</a>
 </p>
 <table class="table">
@@ -21,14 +21,13 @@
                 </th>
             }
             <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>  
-            <th>
-                @Html.DisplayNameFor(model => model.Value)
-            </th>
+          
+           
             <th></th>
         </tr>
     </thead>
@@ -43,14 +42,13 @@
                     </th>
                 }
                 <td>
+                    @Html.DisplayNameFor(model => model.Description)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayNameFor(model => model.Value)
-                </td>
+               
+               
                 <td id="@item.Id">
                     <a asp-action="Increase" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-plus"></i></a>
                     <a asp-action="Decrease" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-minus"></i></a>

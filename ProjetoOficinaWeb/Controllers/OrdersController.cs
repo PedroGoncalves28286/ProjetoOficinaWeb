@@ -35,7 +35,7 @@ namespace ProjetoOficinaWeb.Controllers
             var model = new AddItemViewModel
             {
                
-                Service= _serviceRepository.GetComboServices()
+                Services= _serviceRepository.GetComboServices()
             };
 
             return View(model);

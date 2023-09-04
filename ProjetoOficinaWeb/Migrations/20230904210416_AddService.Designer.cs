@@ -10,7 +10,7 @@ using ProjetoOficinaWeb.Data;
 namespace ProjetoOficinaWeb.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230904201124_AddService")]
+    [Migration("20230904210416_AddService")]
     partial class AddService
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
