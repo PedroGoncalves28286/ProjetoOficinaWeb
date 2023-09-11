@@ -1,4 +1,4 @@
-﻿@model ProjetoOficinaWeb.Data.Entities.Repair
+﻿@model ProjetoOficinaWeb.Models.RepairViewModel
 
 @{
     ViewData["Title"] = "Create new Repair";
@@ -59,7 +59,7 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        await Html.RenderPartialAsync("_ValidationCurrencyPartial");
+       
     }
 
 }

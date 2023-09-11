@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data;
 using ProjetoOficinaWeb.Data.Entities;
 using ProjetoOficinaWeb.Helpers;
+using ProjetoOficinaWeb.Models;
 
 namespace ProjetoOficinaWeb.Controllers
 {
@@ -60,7 +61,7 @@ namespace ProjetoOficinaWeb.Controllers
         [ Authorize(Roles ="Admin")]
         public IActionResult Create()
         {
-            throw new Exception("Excepção de Teste");
+            
             return View();
         }
 
@@ -69,14 +70,17 @@ namespace ProjetoOficinaWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Vehicle,LicensePlate,Service,ServiceId,Appointment,AppointmentId,Mechanic")] Repair repair)
+        public async Task<IActionResult> Create([Bind("Id,Description,Price")] Repair repair)
         {
             if (ModelState.IsValid)
             {
-                //TODO:Modificar para o user que estiver logado 
-                repair.User = await _userHelper.GetUserByEmailAsync("pedromfonsecagoncalves@gmail.com");
-                await _repairRepository.CreateAsync(repair);
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    repair.User = await _userHelper.GetUserByEmailAsync("pedromfonsecagoncalves@gmail.com");
+                    await _repairRepository.CreateAsync(repair);
+                    return RedirectToAction(nameof(Index));
+                }
+               
             }
             return View(repair);
         }
@@ -102,8 +106,9 @@ namespace ProjetoOficinaWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Vehicle,LicensePlate,Service,ServiceId,Appointment,AppointmentId,Mechanic")] Repair repair)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Price")] Repair repair)
         {
+
             if (id != repair.Id)
             {
                 return NotFound();
@@ -113,8 +118,9 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 try
                 {
-                   
+                    
                     await _repairRepository.UpdateAsync(repair);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,6 +128,7 @@ namespace ProjetoOficinaWeb.Controllers
                     {
                         return NotFound();
                     }
+
                     else
                     {
                         throw;
@@ -139,14 +146,14 @@ namespace ProjetoOficinaWeb.Controllers
             {
                 return new NotFoundViewResult("RepairNotFound");
             }
-            var repair = await _repairRepository.GetByIdAsync(id.Value);
+            var repairs = await _repairRepository.GetByIdAsync(id.Value);
 
-            if (repair == null)
+            if (repairs == null)
             {
                 return new NotFoundViewResult("RepairNotFound");
             }
 
-            return View(repair);
+            return View(repairs);
         }
 
         // POST: Repairs/Delete/5
@@ -154,27 +161,10 @@ namespace ProjetoOficinaWeb.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var repair = await _repairRepository.GetByIdAsync(id);
-            try
-            {
-                //throw new Exception("Excepção de Teste");
-                await _repairRepository.DeleteAsync(repair);
+                var repairs = await _repairRepository.GetByIdAsync((int)id);
+                await _repairRepository.DeleteAsync(repairs);
                 return RedirectToAction(nameof(Index));
-            }
-            catch (DbUpdateException ex)
-            {
-                if (ex.InnerException != null && ex.InnerException.Message.Contains("Delete"))
-                {
-                    ViewBag.ErrorTitle = $"{repair.LicensePlate} provavelmente está a ser usado !!";
-                    ViewBag.ErrorMessage = $"{repair.LicensePlate} não pode ser apagado visto haverem serviços que o usam.</br></br>" +
-                    $"Experimente primeiro apagar todas as reparações que estão a usar," +
-                    $"e torne novamente a apagá-lo";
-
-                }
-
-                return View("Error");
-            }
-            
+    
         }
 
         public IActionResult RepairNotFound()

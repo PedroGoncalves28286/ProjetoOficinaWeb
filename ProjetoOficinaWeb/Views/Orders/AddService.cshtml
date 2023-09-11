@@ -1,4 +1,4 @@
-﻿@model ProjetoOficinaWeb.Models.AddServiceViewModel    
+﻿@model ProjetoOficinaWeb.Models.AddItemViewModel
 @{
     ViewData["Title"] = "AddService";
 }
@@ -9,24 +9,22 @@
     <div class="col-md-4">
         <form asp-action="AddService">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div>
-                <label asp-for="User" class="custom-control-label"></label>
-                <select asp-for="User" asp-items=" ViewBag.User" class="form-control"></select>
-                <span asp-validation-for="User" class="text-danger" ></span>
-            </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <select asp-for="Description" asp-items="ViewBag.Id" class="form-control">
-                    <option value="">Select an Option</option>
-                </select>
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="ServiceId" class="control-label"></label>
+                <select asp-for="ServiceId" asp-items="Model.Services" class="form-control"></select>
+                <span asp-validation-for="ServiceId" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />
                 <span asp-validation-for="Price" class="text-danger"></span>
-            </div>       
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-success">Back to List</a>

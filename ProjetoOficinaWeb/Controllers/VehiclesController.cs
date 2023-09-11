@@ -47,6 +47,7 @@ namespace ProjetoOficinaWeb.Controllers
             }
 
             var vehicle = await _vehicleRepository.GetByIdAsync(id.Value);
+
             if (vehicle == null)
             {
                 return new NotFoundViewResult("VehiclesNotFound");
