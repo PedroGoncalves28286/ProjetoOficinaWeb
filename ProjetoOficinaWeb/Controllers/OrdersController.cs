@@ -18,7 +18,7 @@ namespace ProjetoOficinaWeb.Controllers
             _orderRepository = orderRepository;
             _serviceRepository = serviceRepository;
         }
-            public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var model = await _orderRepository.GetOrderAsync(this.User.Identity.Name);
             return View(model);
@@ -34,7 +34,7 @@ namespace ProjetoOficinaWeb.Controllers
         {
             var model = new AddItemViewModel
             {
-               
+                
                 Services= _serviceRepository.GetComboServices()
             };
 
@@ -42,7 +42,7 @@ namespace ProjetoOficinaWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(AddItemViewModel model)
+        public async Task<IActionResult> AddService(AddItemViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -63,8 +63,7 @@ namespace ProjetoOficinaWeb.Controllers
             await _orderRepository.DeleteDetailTempAsync(id.Value);
             return RedirectToAction("Create");
         }
-
-       
+        
 
         public async Task<IActionResult> ConfirmOrder()
         {
@@ -77,7 +76,7 @@ namespace ProjetoOficinaWeb.Controllers
             return RedirectToAction("Create");
         }
 
-        public async Task<IActionResult> Deliver(int? id)
+        public async Task<IActionResult> Appointment(int? id)
         {
             if (id == null)
             {
@@ -93,14 +92,14 @@ namespace ProjetoOficinaWeb.Controllers
             var model = new DeliveryViewModel
             {
                 Id = order.Id,
-                DeliveryDate = DateTime.Today
+                ScheduleDate = DateTime.Today
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Deliver(DeliveryViewModel model)
+        public async Task<IActionResult> Schedule(DeliveryViewModel model)
         {
             if (ModelState.IsValid)
             {

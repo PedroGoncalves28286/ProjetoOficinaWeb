@@ -76,6 +76,8 @@ namespace ProjetoOficinaWeb
             services.AddScoped<IBlobHelper ,BlobHelper>();
             services.AddScoped<IOrderRepository , OrderRepository>();
             services.AddScoped<IMailHelper , MailHelper>(); 
+           
+         
 
             services.ConfigureApplicationCookie(options =>
             {

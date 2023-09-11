@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace ProjetoOficinaWeb.Data
 {
-    public class VehicleRepository :GenericRepository<Vehicle> , IVehicleRepository
+    public class VehicleRepository:GenericRepository<Vehicle> , IVehicleRepository
 
     {
         private readonly DataContext _context;

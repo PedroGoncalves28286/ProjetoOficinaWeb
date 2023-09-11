@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data;
 using ProjetoOficinaWeb.Data.Entities;
@@ -15,12 +18,17 @@ namespace ProjetoOficinaWeb.Controllers
     {
         private readonly IRepairRepository _repairRepository;
         private readonly IUserHelper _userHelper;
+        private readonly IBlobHelper _blobhelper;
+        private readonly IBlobHelper _blobHelper;
+        private readonly IConverterHelper _converterHelper;
 
         public RepairsController(IRepairRepository repairRepository,
-            IUserHelper userHelper)
+            IUserHelper userHelper, IBlobHelper Blobhelper, IConverterHelper converterHelper)
         {
             _repairRepository = repairRepository;
             _userHelper = userHelper;
+            _blobhelper = Blobhelper;
+            _converterHelper = converterHelper;
         }
 
         // GET: Repairs
@@ -48,8 +56,11 @@ namespace ProjetoOficinaWeb.Controllers
         }
 
         // GET: Repairs/Create
+
+        [ Authorize(Roles ="Admin")]
         public IActionResult Create()
         {
+            throw new Exception("Excepção de Teste");
             return View();
         }
 
@@ -144,8 +155,26 @@ namespace ProjetoOficinaWeb.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var repair = await _repairRepository.GetByIdAsync(id);
-           await _repairRepository.DeleteAsync(repair);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                //throw new Exception("Excepção de Teste");
+                await _repairRepository.DeleteAsync(repair);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("Delete"))
+                {
+                    ViewBag.ErrorTitle = $"{repair.LicensePlate} provavelmente está a ser usado !!";
+                    ViewBag.ErrorMessage = $"{repair.LicensePlate} não pode ser apagado visto haverem serviços que o usam.</br></br>" +
+                    $"Experimente primeiro apagar todas as reparações que estão a usar," +
+                    $"e torne novamente a apagá-lo";
+
+                }
+
+                return View("Error");
+            }
+            
         }
 
         public IActionResult RepairNotFound()

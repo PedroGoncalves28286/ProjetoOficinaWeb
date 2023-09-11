@@ -16,12 +16,16 @@ namespace ProjetoOficinaWeb.Controllers
         
         private readonly IServiceRepository _serviceRepository;
         private readonly IUserHelper _userHelper;
+        private readonly IBlobHelper _blobHelper;
+        private readonly IConverterHelper _converterHelper;
 
         public ServicesController(IServiceRepository serviceRepository, 
-            IUserHelper userHelper)
+            IUserHelper userHelper , IBlobHelper blobHelper,IConverterHelper converterHelper)
         {
             _serviceRepository = serviceRepository;
             _userHelper = userHelper;
+            _blobHelper = blobHelper;
+            _converterHelper = converterHelper;
         }
 
         // GET: Services
@@ -154,6 +158,7 @@ namespace ProjetoOficinaWeb.Controllers
         {
             return View();
         }
+
 
        
     }

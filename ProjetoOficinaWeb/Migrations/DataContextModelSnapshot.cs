@@ -177,6 +177,42 @@ namespace ProjetoOficinaWeb.Migrations
                     b.ToTable("Appointments");
                 });
 
+            modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Adress")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FIrstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("PhoneNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("Clients");
+                });
+
             modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.Mechanic", b =>
                 {
                     b.Property<int>("Id")
@@ -216,7 +252,7 @@ namespace ProjetoOficinaWeb.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("DeliveryDate")
+                    b.Property<DateTime?>("AppointmentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("OrderDate")
@@ -291,6 +327,35 @@ namespace ProjetoOficinaWeb.Migrations
                     b.ToTable("OrderDetailsTemp");
                 });
 
+            modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.Receptionist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Firstname")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lastname")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("PhoneNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Receptionists");
+                });
+
             modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.Repair", b =>
                 {
                     b.Property<int>("Id")
@@ -363,6 +428,13 @@ namespace ProjetoOficinaWeb.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Adress")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -375,10 +447,15 @@ namespace ProjetoOficinaWeb.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -414,6 +491,8 @@ namespace ProjetoOficinaWeb.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -528,6 +607,13 @@ namespace ProjetoOficinaWeb.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.Client", b =>
+                {
+                    b.HasOne("ProjetoOficinaWeb.Data.Entities.Client", null)
+                        .WithMany("Clients")
+                        .HasForeignKey("ClientId");
+                });
+
             modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.Mechanic", b =>
                 {
                     b.HasOne("ProjetoOficinaWeb.Data.Entities.User", "User")
@@ -592,6 +678,15 @@ namespace ProjetoOficinaWeb.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.User", b =>
+                {
+                    b.HasOne("ProjetoOficinaWeb.Data.Entities.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId");
+
+                    b.Navigation("Client");
+                });
+
             modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.Vehicle", b =>
                 {
                     b.HasOne("ProjetoOficinaWeb.Data.Entities.User", "User")
@@ -599,6 +694,11 @@ namespace ProjetoOficinaWeb.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.Client", b =>
+                {
+                    b.Navigation("Clients");
                 });
 
             modelBuilder.Entity("ProjetoOficinaWeb.Data.Entities.Order", b =>

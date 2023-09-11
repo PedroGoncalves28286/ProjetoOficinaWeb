@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ProjetoOficinaWeb.Data
 {
-    public interface IOrderRepository :IGenericRepository<Order>
+    public interface IOrderRepository : IGenericRepository<Order>
     {
         Task<IQueryable<Order>> GetOrderAsync(string userName);
 
@@ -13,14 +13,26 @@ namespace ProjetoOficinaWeb.Data
 
         Task AddItemToOrderAsync(AddItemViewModel model, string userName);
 
-      
+        Task ModifyOrderDetailTempAsync(int id, double quantity);
 
         Task DeleteDetailTempAsync(int id);
 
         Task<bool> ConfirmOrderAsync(string userName);
 
-        Task DeliverOrder(DeliveryViewModel model);
-
         Task<Order> GetOrderAsync(int id);
+
+        Task RepairOrder(RepairViewModel model);
+
+        
+
+        Task RecoverPasswordViewModel(RecoverPasswordViewModel model);
+
+        
+
+        Task RecoverPasswordViewModel(RecoverPasswordViewModel model, string password); 
+
+        Task DeliverOrder(DeliveryViewModel model);
+       
     }
+        
 }

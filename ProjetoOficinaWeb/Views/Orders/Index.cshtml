@@ -18,10 +18,13 @@
                 </th>
             }
             <th>
+                @Html.DisplayNameFor(model => model.OrderDateLocal)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.OrderDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DeliveryDate)
+                @Html.DisplayNameFor(model => model.AppointmentDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Lines)
@@ -43,14 +46,14 @@
                     @Html.DisplayFor(modelItem => item.OrderDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DeliveryDate)
+                    @Html.DisplayFor(modelItem => item.AppointmentDate)
                 </td>
                 <td>
                     @Html.DisplayNameFor(model => model.Lines)
                 </td>
                 <td>
-                    <a asp-action="Deliver" asp-route-id="@item.Id" class="btn btn-info" id="btnDeliver">Deliver</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger" id="btnDelete">Delete</a>
+                    <a asp-action="Schedule" asp-route-id="@item.Id" class="btn btn-info" id="btnSchedule">Schedule</a>
+                    <a asp-action="Schedule" asp-route-id="@item.Id" class="btn btn-danger" id="btnSchedule">Delete</a>
                 </td>
             </tr>
         }

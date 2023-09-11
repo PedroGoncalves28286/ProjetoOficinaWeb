@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data.Entities;
 using System;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace ProjetoOficinaWeb.Data
             await _context.Set<T>().AddAsync(entity);
             await SaveAllAsync();
         }
+        
 
         public async Task UpdateAsync(T entity)
         {

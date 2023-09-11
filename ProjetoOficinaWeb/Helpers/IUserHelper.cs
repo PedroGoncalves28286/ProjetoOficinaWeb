@@ -31,5 +31,8 @@ namespace ProjetoOficinaWeb.Helpers
 
         Task<User> GetUserByIdAsync(string userid);
         Task<string> GenerateEmailConfirmationTokenAsync(User user);
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+
+        Task<IdentityResult>ResetPasswordAsync(User user, string token, string password);
     }
 }

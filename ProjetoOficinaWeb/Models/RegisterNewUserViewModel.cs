@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using ProjetoOficinaWeb.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjetoOficinaWeb.Models
 {
-    public class RegisterNewUserViewModel
+    public class RegisterNewUserViewModel :User
     {
         [Required]
-        [Display(Name ="First Name")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
@@ -16,6 +18,15 @@ namespace ProjetoOficinaWeb.Models
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Username { get; set; }
+
+        [MaxLength(100, ErrorMessage = "the field {0} only can contain {1} characters lenght.")]
+        public string AAddress { get; set; }
+
+        [MaxLength(20, ErrorMessage ="the field {0} only can contain {1}characters length")]
+        public string PhoneNumber { get; set; }
+
+        public IFormFile ImageFile { get; set; }
+
 
 
         [Required]

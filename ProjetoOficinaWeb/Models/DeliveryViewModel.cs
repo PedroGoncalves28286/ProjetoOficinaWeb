@@ -7,8 +7,8 @@ namespace ProjetoOficinaWeb.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Delivery date")]
+        [Display(Name = "Schedule date")]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
-        public DateTime DeliveryDate { get; set; }
+        public DateTime ScheduleDate { get; set; }
     }
 }

@@ -8,6 +8,26 @@ namespace ProjetoOficinaWeb.Helpers
 {
     public class ConverterHelper : IConverterHelper
     {
+        public Repair ToRepair(RepairViewModel model, string path, bool isNew)
+        {
+            throw new NotImplementedException();
+        }
+
+        public RepairViewModel ToRepairViewModel(Repair repair)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Service ToService(ServiceViewModel model, string path, bool isNew)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ServiceViewModel ToServiceViewModel(Service service)
+        {
+            throw new NotImplementedException();
+        }
+
         public Vehicle ToVehicle(VehicleViewModel model,Guid imageId, bool isNew)
         {
             return new Vehicle

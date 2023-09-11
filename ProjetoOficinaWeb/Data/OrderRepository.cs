@@ -45,11 +45,15 @@ namespace ProjetoOficinaWeb.Data
                 {
                     Description = service.Description,
                     Price = service.Price,
-                   
                     User = user
                 };
 
                 _context.OrderDetailsTemp.Add(orderDetailTemp);
+            }
+            else
+            {
+                orderDetailTemp.Price = service.Price;
+                _context.OrderDetailsTemp.Update(orderDetailTemp);
             }
             
 
@@ -94,9 +98,15 @@ namespace ProjetoOficinaWeb.Data
             return true;
         }
 
-        public Task DeleteDetailTempAsync(int id)
+        public async Task DeleteDetailTempAsync(int id)
         {
-            throw new NotImplementedException();
+            var orderDetailtemp = await _context.OrderDetailsTemp.FindAsync(id);
+            if(orderDetailtemp== null)
+            {
+                return;
+            }
+            _context.OrderDetailsTemp.Remove(orderDetailtemp);  
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeliverOrder(DeliveryViewModel model)
@@ -107,7 +117,7 @@ namespace ProjetoOficinaWeb.Data
                 return;
             }
 
-            order.DeliveryDate = model.DeliveryDate;
+            order.AppointmentDate = model.ScheduleDate;
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
         }
@@ -125,6 +135,8 @@ namespace ProjetoOficinaWeb.Data
                 .Where(o => o.User == user)
                 .OrderBy(o => o.Service.Description);
         }
+
+
 
         public async Task<IQueryable<Order>> GetOrderAsync(string userName)
         {
@@ -155,6 +167,11 @@ namespace ProjetoOficinaWeb.Data
             return await _context.Orders.FindAsync(id);
         }
 
+        public Task ModifyOrderDetailTempAsync(int id, double quantity)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task ModifyOrderDetailTempQuantityAsync(int id, double quantity)
         {
             var orderDetailTemp = await _context.OrderDetailsTemp.FindAsync(id);
@@ -171,6 +188,23 @@ namespace ProjetoOficinaWeb.Data
             }
         }
 
-        
+        public Task RecoverPasswordViewModel(RecoverPasswordViewModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task RecoverPasswordViewModel(RecoverPasswordViewModel model, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+       
+
+      
+
+        public Task RepairOrder(RepairViewModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

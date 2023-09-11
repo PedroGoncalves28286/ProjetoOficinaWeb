@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data.Entities;
+using ProjetoOficinaWeb.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProjetoOficinaWeb.Data
 {
@@ -34,6 +36,21 @@ namespace ProjetoOficinaWeb.Data
                 Value = "0"
             });
             return list;
+        }
+
+        IQueryable IAppointmentRepository.GetAllWithUsers()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IEnumerable<SelectListItem> IAppointmentRepository.GetComboAppointments()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Task IAppointmentRepository.RepairOrder(RepairViewModel model)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

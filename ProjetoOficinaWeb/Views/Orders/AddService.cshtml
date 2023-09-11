@@ -1,4 +1,4 @@
-﻿@model ProjetoOficinaWeb.Models.AddItemViewModel    
+﻿@model ProjetoOficinaWeb.Models.AddServiceViewModel    
 @{
     ViewData["Title"] = "AddService";
 }
@@ -10,9 +10,9 @@
         <form asp-action="AddService">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div>
-                <label asp-for="ServiceId" class="custom-control-label"></label>
-                <select asp-for="ServiceId" asp-items="Model.Services" class="form-control"></select>
-                <span asp-validation-for="ServiceId" class="text-danger" ></span>
+                <label asp-for="User" class="custom-control-label"></label>
+                <select asp-for="User" asp-items=" ViewBag.User" class="form-control"></select>
+                <span asp-validation-for="User" class="text-danger" ></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
