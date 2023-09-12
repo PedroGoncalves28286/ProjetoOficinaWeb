@@ -21,12 +21,13 @@
                 <span asp-validation-for="LastName" class="text-warning"></span>
             </div>
 
+
             <div class="form-group">
-                <input type="submit" value="Update" class="btn btn-primary" />
-                <a asp-action="ChangePassword" class="btn btn-success">Change Password</a>
+                <button type="submit" value="Update" class="btn btn-primary" /><i class="fa-solid fa-arrows-rotate"></i> Update Info</button>
+                <a asp-action="ChangePassword" class="btn btn-success"><i class="fa-solid fa-arrow-right-arrow-left"></i> Change Password</a>
             </div>
 
-            <div class="text-success">@ViewBag.UserMessage</div>
+            <div class="@(ViewBag.UserMessageColor ?? "text-success")">@ViewBag.UserMessage</div>
         </form>
     </div>
 </div>

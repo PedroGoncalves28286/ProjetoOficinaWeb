@@ -70,7 +70,7 @@ namespace ProjetoOficinaWeb.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Description,Price")] Repair repair)
+        public async Task<IActionResult> Create([Bind("Id,Vehicle,LicensePlate,Service,ServiceId,Appointment, AppointmentId, Mechanic")] Repair repair)
         {
             if (ModelState.IsValid)
             {

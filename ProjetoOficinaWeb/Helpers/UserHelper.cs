@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data.Entities;
 using ProjetoOficinaWeb.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ProjetoOficinaWeb.Helpers
@@ -116,5 +118,13 @@ namespace ProjetoOficinaWeb.Helpers
                 password,
                 false);
         }
+
+        public async Task<int> GetAdminUserCountAsync()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            var adminCount = users.Count(u => _userManager.IsInRoleAsync(u, "Admin").Result);
+            return adminCount;  
+        }
+        
     }
 }

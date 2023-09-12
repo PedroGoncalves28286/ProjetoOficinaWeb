@@ -4,18 +4,36 @@
     ViewData["Title"] = "Create";
 }
 
-
 <h2>Create</h2>
+
+
 <p>
-    <a asp-action="AddService" class="btn btn-success">Add Service</a>
+    <a asp-action="Addservice" class="btn btn-success">Add Service</a>
     <a asp-action="ConfirmOrder" class="btn btn-primary" id="btnConfirm">Confirm Order</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Value)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Service)
             </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -24,25 +42,39 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Service.Description)
+                    @Html.DisplayFor(modelItem => item.Id)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Service)
+                </td>
+              
                 <td id="@item.Id">
-                    <a asp-action="DeleteItem" asp-route-id="@item.Id" class="btn btn-danger" id="btnDeleteItem"><i class="fa fa-trash"></i></a>
+                    <a asp-action="Increase" asp-route-id="@item.Id" class="btn btn-warning"><i class="fa fa-plus"></i></a>
+                    <a asp-action="Decrease" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-minus"></i></a>
+                    <a asp-action="DeleteItem" asp-route-id="@item.Id" class="btn btn-danger" id="btnDeleteItem">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
 <div id="confirmDialog" class="modal fade">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Confirm Service</h4>
+                <h4 class="modal-title">Confirm Order</h4>
                 <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
             </div>
             <div class="modal-body">
-                <p>Do you want to confirm the order?</p>
+                <p>Do you want to confirm the order ?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="btnYesConfirm">Yes</button>
@@ -51,6 +83,7 @@
         </div>
     </div>
 </div>
+
 <div id="deleteDialog" class="modal fade">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -59,7 +92,7 @@
                 <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
             </div>
             <div class="modal-body">
-                <p>Do you want to delete product from order ?</p>
+                <p>Do you want to delete the book from the order?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="btnYesDelete">Yes</button>
@@ -99,4 +132,4 @@
             });
         });
     </script>
-    }
+}

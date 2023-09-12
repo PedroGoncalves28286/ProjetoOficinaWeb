@@ -15,7 +15,7 @@ namespace ProjetoOficinaWeb.Data.Entities
         public string  Vehicle { get; set; }
 
 
-        [Required]
+        
         [Display(Name = "License Plate")]
         public string LicensePlate { get; set; }
 
@@ -26,7 +26,7 @@ namespace ProjetoOficinaWeb.Data.Entities
         public DateTime Appointment { get; set; }
 
         public string AppointmentId { get; set; }
-        [Required]
+        
         public string Mechanic { get; set; }
 
         public User User { get; set; }

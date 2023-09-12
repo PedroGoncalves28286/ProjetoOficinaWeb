@@ -34,5 +34,7 @@ namespace ProjetoOficinaWeb.Helpers
         Task<string> GeneratePasswordResetTokenAsync(User user);
 
         Task<IdentityResult>ResetPasswordAsync(User user, string token, string password);
+
+        Task<int> GetAdminUserCountAsync(); 
     }
 }

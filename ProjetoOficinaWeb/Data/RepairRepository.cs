@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using ProjetoOficinaWeb.Data.Entities;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace ProjetoOficinaWeb.Data
 
         public IQueryable GetAllWithUsers()
         {
-            throw new System.NotImplementedException();
+            return _context.Repairs.Include(m => m.User);
         }
 
         public IEnumerable<SelectListItem> GetComboRepairs()

@@ -43,7 +43,7 @@ namespace ProjetoOficinaWeb.Controllers
             foreach (User user in users)
             {
                 var model = new UserWithRolesViewModel();
-                model.Id = user.Id;
+                
                 model.FirstName = user.FirstName;
                 model.LastName = user.LastName;
                 model.PhoneNumber = user.PhoneNumber;

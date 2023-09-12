@@ -1,0 +1,64 @@
+﻿@model List<UserWithRolesViewModel>
+
+<h2>User List</h2>
+
+@if (TempData.ContainsKey("AdminDeletedMessage"))
+{
+    <div class="alert alert-success">
+        @TempData["AdminDeletedMessage"]
+    </div>
+}
+
+@if (TempData.ContainsKey("AdminDeleteErrorMessage"))
+{
+    <div class="alert alert-danger">
+        @TempData["AdminDeleteErrorMessage"]
+    </div>
+}
+
+<div class="table-container">
+    <table class="table-footer-gap" id="userlist">
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Roles</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var userWithRoles in Model)
+            {
+                var user = userWithRoles.User;
+                var roles = userWithRoles.Roles;
+                <tr>
+                    <td>
+                        @if (user.Email == null)
+                        {
+                            <img src="~/images/no_image.png" alt="Default Profile Image" width="50" />
+                        }
+                        else
+                        {
+                            <img src="@Url.Content("~/images/photos/" + user.Email)" alt="Profile Image" width="50" />
+                        }
+                    </td>
+                    <td>@user.UserName</td>
+                    <td>@($"{user.FirstName} {user.LastName}")</td>
+                    <td>
+                        @roles.FirstOrDefault()
+                    </td>
+                    <td style="display: flex; align-items: center;">
+                        <a asp-controller="Account" asp-action="Edit" asp-route-id="@user.Id" class="btn btn-primary rounded adjusted-icon btn-margin-right"><i class="fa fa-edit"></i></a>
+                        <form asp-controller="Account" asp-action="Delete" method="post">
+                            <input type="hidden" name="userId" value="@user.Id" />
+                            <button type="submit" class="btn btn-danger rounded adjusted-icon btn-margin-right"><i class="fa fa-trash"></i></button>
+                        </form>
+                        <a asp-controller="Account" asp-action="Details" asp-route-id="@user.Id" class="btn btn-info rounded adjusted-icon"><i class="fa fa-info-circle"></i></a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

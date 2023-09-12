@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjetoOficinaWeb.Data.Entities
 {
@@ -19,6 +20,8 @@ namespace ProjetoOficinaWeb.Data.Entities
         public string Photo { get; set; }
 
         public User User { get; set; }
+
+
 
 
 
